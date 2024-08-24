@@ -12,6 +12,8 @@ cd examples
 
 g++ t.cpp -std=c++17 -I../include -O3 -o t -DDEBUG
 
+./t
+
 python3 t.py
 ```
 
