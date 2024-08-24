@@ -38,18 +38,22 @@ class IOProcessor {
   uint64_t stringToBinary64(std::string& str) {
     std::string binaryString;
 
-    // 使用 std::remove 將所有的 '/' 移動到字串末尾，返回新末尾的迭代器
+    // 移除字串中的 '/'
     str.erase(std::remove(str.begin(), str.end(), '/'), str.end());
+
     // 將字串轉換為二進制表示
     for (char c : str) {
       std::bitset<8> bits(static_cast<unsigned long long>(c));
       binaryString += bits.to_string();
     }
 
-    // 如果不足64位，std::bitset<64>會自動補0
-    std::bitset<64> first64Bits(binaryString.substr(0, 64));
+    // 如果不足64位，右邊補0
+    if (binaryString.size() < 64) {
+      binaryString.append(64 - binaryString.size(), '0');
+    }
 
-    // 將前64個位元轉換為uint64_t
+    // 提取前64個位元並轉換為uint64_t
+    std::bitset<64> first64Bits(binaryString);
     return first64Bits.to_ullong();
   }
 
